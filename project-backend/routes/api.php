@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,7 @@ Route::group([
     Route::post('me', [AuthController::class, 'me'])->name('auth.me');
 
 });
+
+Route::get('/test/data', function(Request $request) {
+    return response()->json(['data' => 'ekav backic']);
+})->name('auth.me');
