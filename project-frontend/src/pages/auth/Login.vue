@@ -19,33 +19,34 @@ export default {
   data() {
     return {
       form: {
-        email: 'test@gmail.com',
-        password: '123456'
-      }
+        email: '',
+        password: ''
+      },
+      local: ''
     }
   },
   methods: {
     sendToBack() {
-      // return new Promise((resolve, reject) => {
-      //     axios.post('/auth/login', this.form)
-      //           .then((result) => {
-      //             console.log(result)
-      //           })
-      //           .catch(error => {
-      //             console.log(error)
-      //           })
-      // })
       return new Promise((resolve, reject) => {
-        axios.get('/test/data')
-          .then((result) => {
-            console.log(result)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+          axios.post('/auth/login', this.form)
+                .then((result) => {
+                  this.local = result['data']['access_token'];
+                  console.log(this.local);
+                  localStorage.setItem('access_token', this.local)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
       })
-
-
+      // return new Promise((resolve, reject) => {
+      //   axios.get('/test/data')
+      //     .then((result) => {
+      //       console.log(result)
+      //     })
+      //     .catch(error => {
+      //       console.log(error)
+      //     })
+      // })
     }
   }
 }

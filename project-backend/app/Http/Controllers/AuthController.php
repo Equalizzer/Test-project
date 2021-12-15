@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+//use function GuzzleHttp\Promise\all;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
+//    /**
+//     * Create a new AuthController instance.
+//     *
+//     * @return void
+//     */
+//    public function __construct()
+//    {
+//        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
+//    }
 
     /**
      * Get a JWT token via given credentials.
@@ -29,7 +32,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if ($token = $this->guard()->attempt($credentials)) {
+        if ($token = auth()->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
 
@@ -92,5 +95,17 @@ class AuthController extends Controller
     public function guard()
     {
         return Auth::guard();
+    }
+
+    public function registration(Request $request)
+    {
+        $user = [
+            "name" => $request->get('name'),
+            "email" => $request->get('email'),
+            "password" => Hash::make($request->get('password'))
+        ];
+
+        User::create($user);
+        return response()->json(['massage' => 'ekav']);
     }
 }

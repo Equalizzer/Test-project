@@ -29,6 +29,9 @@ Route::group([
 
 });
 
-Route::get('/test/data', function(Request $request) {
-    return response()->json(['data' => 'ekav backic']);
-})->name('auth.me');
+//Route::get('/test/data', function(Request $request) {
+//    return response()->json(['data' => 'ekav backic']);
+//})->name('auth.me');
+
+
+Route::post('/register', [AuthController::class,'registration'])->name('auth.registration');
