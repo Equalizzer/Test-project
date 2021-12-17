@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 //use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 //use function GuzzleHttp\Promise\all;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -99,13 +101,30 @@ class AuthController extends Controller
 
     public function registration(Request $request)
     {
-        $user = [
+        $ver_token = Str::random(128);
+        $credentials = [
             "name" => $request->get('name'),
-            "email" => $request->get('email'),
-            "password" => Hash::make($request->get('password'))
+            'email' => $request->get('email'),
+            "password" => Hash::make($request->get('password')),
+            "verification_token" => $ver_token
         ];
 
-        User::create($user);
-        return response()->json(['massage' => 'ekav']);
+        $newUser = User::query()->create($credentials);
+        if ($newUser) {
+            $this->emailVerification($newUser, $ver_token);
+            return response()->json(['message' => 'User Registered']);
+        }
+        return response()->json(['error' => 'Something is wrong']);
+    }
+
+    /**
+     * @param $user
+     * @param $token
+     */
+    public function emailVerification($user, $token)
+    {
+        Mail::send('mail.verify', ['user' => $user, 'token' => $token], function ($m) use ($user) {
+            $m->to($user->email, $user->name)->subject('Please Verify your Email');
+        });
     }
 }

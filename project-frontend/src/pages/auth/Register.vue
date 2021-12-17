@@ -29,10 +29,9 @@ export default {
   methods: {
     sendToBack() {
       return new Promise((resolve, reject) => {
-        console.log('asdasdsa')
         axios.post('/register', this.form)
           .then((result) => {
-            console.log(result)
+            return this.$router.push({ name: 'Login' })
           })
           .catch(error => {
             console.log(error)
