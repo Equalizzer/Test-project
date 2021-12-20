@@ -1,4 +1,3 @@
-require('./bootstrap-vue');
-require('./helpers');
-require('./vee-validate');
 require('./axios');
+require('./vee-validate');
+require('./bootstrap-vue');

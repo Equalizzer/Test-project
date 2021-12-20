@@ -5,31 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-//use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-//use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-//    /**
-//     * Create a new AuthController instance.
-//     *
-//     * @return void
-//     */
-//    public function __construct()
-//    {
-//        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
-//    }
-
     /**
-     * Get a JWT token via given credentials.
+     * Create a new AuthController instance.
      *
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
+    }
+
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -38,8 +30,47 @@ class AuthController extends Controller
             return $this->respondWithToken($token);
         }
 
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return response()->json(['error' => 'sxal mutqagrvac tvyalner'], 422);
     }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function registration(Request $request)
+    {
+        $ver_token = Str::random(128);
+
+        $credentials = [
+            "name" => $request->get('name'),
+            'email' => $request->get('email'),
+            "password" => Hash::make($request->get('password')),
+            "verification_token" => $ver_token
+        ];
+
+        $newUser = User::query()->create($credentials);
+
+        if($newUser) {
+            $this->emailVerification($newUser, $ver_token);
+            return response()->json(['message' => 'User Registered']);
+        }
+
+        return response()->json(['error' => 'Something is wrong']);
+    }
+
+
+    /**
+     * @param $user
+     * @param $token
+     */
+    public function emailVerification($user, $token)
+    {
+        Mail::send('mail.verify', ['user' => $user, 'token' => $token], function ($m) use ($user) {
+            $m->to($user->email, $user->name)->subject('Please Verify your Email');
+        });
+    }
+
 
     /**
      * Get the authenticated User
@@ -99,32 +130,6 @@ class AuthController extends Controller
         return Auth::guard();
     }
 
-    public function registration(Request $request)
-    {
-        $ver_token = Str::random(128);
-        $credentials = [
-            "name" => $request->get('name'),
-            'email' => $request->get('email'),
-            "password" => Hash::make($request->get('password')),
-            "verification_token" => $ver_token
-        ];
 
-        $newUser = User::query()->create($credentials);
-        if ($newUser) {
-            $this->emailVerification($newUser, $ver_token);
-            return response()->json(['message' => 'User Registered']);
-        }
-        return response()->json(['error' => 'Something is wrong']);
-    }
 
-    /**
-     * @param $user
-     * @param $token
-     */
-    public function emailVerification($user, $token)
-    {
-        Mail::send('mail.verify', ['user' => $user, 'token' => $token], function ($m) use ($user) {
-            $m->to($user->email, $user->name)->subject('Please Verify your Email');
-        });
-    }
 }

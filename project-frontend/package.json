@@ -2,7 +2,7 @@
   "name": "project-frontend",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "Azat Hakobyan azathakobyan@inbox.ru",
+  "author": "Azat hakobyan azathakobyan@inbox.ru",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -13,9 +13,10 @@
     "axios": "^0.24.0",
     "bootstrap-vue": "^2.21.2",
     "vee-validate": "^3.4.8",
-    "vue": "^2.6.14",
+    "vue": "^2.5.2",
     "vue-axios": "^3.4.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

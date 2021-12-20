@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,22 +16,15 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::group([
-
-    'middleware' => 'api',
+    'middleware'=>'api',
     'prefix' => 'auth'
-
 ], function ($router) {
-
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::post('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
     Route::post('me', [AuthController::class, 'me'])->name('auth.me');
-
+    Route::post('registration', [AuthController::class, 'registration'] )->name('auth.registration');
 });
 
-//Route::get('/test/data', function(Request $request) {
-//    return response()->json(['data' => 'ekav backic']);
-//})->name('auth.me');
 
 
-Route::post('/register', [AuthController::class,'registration'])->name('auth.registration');

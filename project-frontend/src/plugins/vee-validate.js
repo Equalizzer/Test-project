@@ -1,15 +1,16 @@
 import {extend} from "vee-validate";
 import {required, email, numeric} from "vee-validate/dist/rules";
 
+extend("numeric", {
+  ...numeric,
+  message: "*Petq a lini tiv mutqagrvac"
+});
+
+
 extend("required", {
   ...required,
   message: "*Заполнение необходимо"
 });
-
-extend("numeric", {
-  ...numeric,
-  massage: "*Petq a tiv lini mutqagrvac"
-})
 
 extend("password", {
   message: "*Используйте 8+ символов, состоящих из букв, цифр и символов.",
@@ -25,6 +26,8 @@ extend("email", {
 });
 
 
+
+
 extend("username", {
   message: '*Разрешены только буквы и цифры',
   validate(value) {
@@ -32,3 +35,4 @@ extend("username", {
     return reg.test(value)
   }
 })
+
