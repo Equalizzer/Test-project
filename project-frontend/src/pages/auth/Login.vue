@@ -82,6 +82,7 @@
 <script>
 import {ValidationProvider, ValidationObserver} from "vee-validate"
 import axios from 'axios'
+
 export default {
   components: {
     ValidationProvider,
@@ -103,9 +104,9 @@ export default {
 
       this.$store.dispatch('LOGIN_USER', this.login_form)
         .then(res => {
-         if(res) {
-           this.$router.push({name: 'Profile'})
-         }
+          if (res) {
+            this.$router.push({name: 'Profile'})
+          }
         })
         .catch(error => {
           console.log(error)
